@@ -1,7 +1,10 @@
 pipeline {
     agent any
+    options {
+        skipStagesAfterUnstable()
+    }
     stages {
-         stage('Build') {
+        stage('Build') {
             steps {
                 echo 'Building'
             }
@@ -11,23 +14,9 @@ pipeline {
                 echo 'Testing'
             }
         }
-
-        stage('Deploy - Staging') {
+        stage('Deploy') {
             steps {
-                sh './deploy staging'
-                sh './run-smoke-tests'
-            }
-        }
-
-        stage('Sanity check') {
-            steps {
-                input "Does the staging environment look ok?"
-            }
-        }
-
-        stage('Deploy - Production') {
-            steps {
-                sh './deploy production'
+                echo 'Deploying'
             }
         }
     }
